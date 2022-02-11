@@ -1,9 +1,12 @@
 // @ts-check
+const path = require("path");
 const Express = require("express");
 const Browserify = require("browserify");
 const Babel = require("@babel/core");
 const Through = require("through2");
 const Sass = require("sass");
+const livereload = require("livereload");
+const connectLivereload = require("connect-livereload");
 const App = Express();
 
 /** @returns {Promise<string>} */
@@ -59,6 +62,8 @@ function CompileSass() {
   return Sass.compile("./styles/entry.scss").css;
 }
 
+App.use(connectLivereload());
+
 App.get("/_/bundle.js", async (req, res) => {
   try {
     const data = await CompileApp();
@@ -83,17 +88,27 @@ App.use("/static", Express.static("static"));
 
 App.get("*", (req, res) => {
   res.header("Content-Type", "text/html").status(200).send(`<!DOCTYPE html>
-<html>
-    <head>
-    <title>Pharmacy2U Technical Test</title>
-    <link rel="stylesheet" href="/_/bundle.css" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    </head>
-    <body>
-    <div id="react-container"></div>
-    <script src="/_/bundle.js"></script>
-    </body>
-</html>`);
+  <html>
+      <head>
+      <title>Pharmacy2U Technical Test</title>
+      <link rel="stylesheet" href="/_/bundle.css" />
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      </head>
+      <body>
+      <div id="react-container"></div>
+      <script src="/_/bundle.js"></script>
+      <script>
+      
+      <!-- easiest way to add hot-reload-->
+      document.write(
+        '<script src="http://' +
+          (location.host || "localhost").split(":")[0] +
+          ':35729/livereload.js?snipver=1"></' +
+          "script>"
+      );
+    </script>
+      </body>
+  </html>`);
 });
 
 App.listen(3000, () => {
