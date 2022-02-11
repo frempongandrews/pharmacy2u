@@ -5,8 +5,6 @@ const Browserify = require("browserify");
 const Babel = require("@babel/core");
 const Through = require("through2");
 const Sass = require("sass");
-const livereload = require("livereload");
-const connectLivereload = require("connect-livereload");
 const App = Express();
 
 /** @returns {Promise<string>} */
@@ -61,8 +59,6 @@ function CompileApp() {
 function CompileSass() {
   return Sass.compile("./styles/entry.scss").css;
 }
-
-App.use(connectLivereload());
 
 App.get("/_/bundle.js", async (req, res) => {
   try {
