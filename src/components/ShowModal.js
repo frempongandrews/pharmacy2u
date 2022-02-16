@@ -90,6 +90,10 @@ const Wrapper = styled.div`
 
   .episodes-container {
     margin-top: 20px;
+    .episodes-inner-container {
+      height: 510px;
+      overflow-y: scroll;
+    }
     .episode-container {
       display: flex;
       position: relative;
@@ -115,15 +119,12 @@ const Wrapper = styled.div`
         .play-btn {
           position: absolute;
           top: 50px;
-          /* top: 40%; */
-          /* left: 50%; */
           right: 50%;
           transform: translate(-50%, -50%);
         }
       }
       .episode-description-container {
         height: 100%;
-
         flex: 1;
         font-size: var(--theme-small-font);
         padding-top: 5px;
@@ -132,8 +133,12 @@ const Wrapper = styled.div`
     }
     .about-container {
       font-size: var(--theme-small-font);
+      height: 545px;
+      overflow: hidden;
+      border: 2px solid;
       .series-image-container {
         overflow: hidden;
+        height: 400px;
       }
     }
   }
@@ -179,12 +184,66 @@ const ShowModal = ({ onHideShowDetails }) => {
         {/*Espisodes container */}
         <div className="row episodes-container">
           {/* col */}
-          <div className="col-lg-8">
+          <div className="col-lg-8 episodes-inner-container">
             {/*single episode */}
             <div className="episode-container">
               <p className="title">Series 1 - Episode 1</p>
               <div className="episode-image-container">
                 <FaPlay className="play-btn" />
+                <img
+                  src="https://static.tvmaze.com/uploads/images/original_untouched/1/4392.jpg"
+                  width="180px"
+                />
+              </div>
+              <div className="episode-description-container">
+                <p>
+                  Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed
+                  do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+                  Ut enim ad minim veniam...{" "}
+                </p>
+              </div>
+            </div>
+
+            {/*single episode */}
+            <div className="episode-container">
+              <p className="title">Series 1 - Episode 1</p>
+              <div className="episode-image-container">
+                <img
+                  src="https://static.tvmaze.com/uploads/images/original_untouched/1/4392.jpg"
+                  width="180px"
+                />
+              </div>
+              <div className="episode-description-container">
+                <p>
+                  Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed
+                  do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+                  Ut enim ad minim veniam...{" "}
+                </p>
+              </div>
+            </div>
+
+            {/*single episode */}
+            <div className="episode-container">
+              <p className="title">Series 1 - Episode 1</p>
+              <div className="episode-image-container">
+                <img
+                  src="https://static.tvmaze.com/uploads/images/original_untouched/1/4392.jpg"
+                  width="180px"
+                />
+              </div>
+              <div className="episode-description-container">
+                <p>
+                  Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed
+                  do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+                  Ut enim ad minim veniam...{" "}
+                </p>
+              </div>
+            </div>
+
+            {/*single episode */}
+            <div className="episode-container">
+              <p className="title">Series 1 - Episode 1</p>
+              <div className="episode-image-container">
                 <img
                   src="https://static.tvmaze.com/uploads/images/original_untouched/1/4392.jpg"
                   width="180px"
@@ -252,9 +311,7 @@ const ShowModal = ({ onHideShowDetails }) => {
               Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
               eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
               enim ad minim veniam, quis nostrud exercitation ullamco laboris
-              nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in
-              reprehenderit in voluptate velit esse cillum dolore eu fugiat
-              nulla pariatur.{" "}
+              nisi ut aliquip ex ea commodo
             </p>
             {/* End series description*/}
           </div>

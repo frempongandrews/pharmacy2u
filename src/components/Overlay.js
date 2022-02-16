@@ -13,11 +13,7 @@ const Wrapper = styled.div`
 `;
 
 const Overlay = ({ hideOverlay }) => {
-  return (
-    <Wrapper onClick={hideOverlay}>
-      <h1>Overlay</h1>
-    </Wrapper>
-  );
+  return <Wrapper onClick={hideOverlay}></Wrapper>;
 };
 
 Overlay.defaultProps = {
