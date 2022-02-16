@@ -1,11 +1,14 @@
 import React from "react";
 import Header from "../components/Header";
+import ShowList from "../components/ShowList";
 
-/** @type {React.FC} */
-export const Home = () => {
+const Home = () => {
   return (
     <div>
       <Header />
+      <ShowList />
     </div>
   );
 };
+
+export default Home;

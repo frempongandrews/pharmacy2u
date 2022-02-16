@@ -1,0 +1,16 @@
+Motivations:
+
+The following are my motivations for doing what I did in the test.
+
+- Can the project setup be changed?
+I decided to stick with the default setup. Normally I would use a bundler like webpack(the industry standard) to setup a project like this.
+Unfamiliarity with browserify means more time to research and learn how to accomplish the same results attainable with webpack.
+
+- I am given an entry.scss for styling. Can I style the App in another way?
+I decided to leave use the entry.scss for resetting the browsers styles using
+the Eric Meyers reset. Styled components is the industry standard due to the 
+styles being scoped to that specific component and zero risk of class name 
+clashes which can make debugging css very hard.
+
+- 
+
