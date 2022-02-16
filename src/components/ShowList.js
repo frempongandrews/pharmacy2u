@@ -26,7 +26,7 @@ const ShowList = () => {
   return (
     <Wrapper className="container-lg">
       {selectedShow && <Overlay hideOverlay={onHideShowDetails} />}
-      {selectedShow && <ShowModal />}
+      {selectedShow && <ShowModal onHideShowDetails={onHideShowDetails} />}
       <h1 className="title">Today</h1>
       <div className="row">
         <div className="col-md-6 col-xl-4" onClick={onViewShowDetails}>

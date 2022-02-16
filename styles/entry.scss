@@ -149,6 +149,7 @@ table {
   --theme-light-gray: #f8f9fa;
   --theme-dark-gray: #cfcfcf;
   --theme-dark-blue: #005b8f;
+  --theme-small-font: 0.88em;
 }
 
 a {
@@ -158,4 +159,8 @@ a {
 
 a:hover {
   color: inherit;
+}
+
+p {
+  line-height: 20px;
 }
