@@ -5,11 +5,11 @@ const Wrapper = styled.div`
   height: 220px;
   /* width: 450px; */
   display: flex;
-  border: 1px solid #979797;
+  border: 1px solid var(--theme-light-gray);
   border-radius: 12px;
   padding: 15px 10px;
   margin-bottom: 20px;
-  box-shadow: 8px 8px 5px 0px #cfcfcf;
+  box-shadow: 8px 8px 5px 0px var(--theme-dark-gray);
   background-color: var(--theme-light-gray);
   cursor: pointer;
   transition: all 0.3s ease;
@@ -21,8 +21,8 @@ const Wrapper = styled.div`
     height: 100%;
     width: 150px;
     overflow: hidden;
-    border: 1px solid green;
-    box-shadow: 5px 5px 5px 0px #cfcfcf;
+    border: 1px solid var(--theme-dark-gray);
+    box-shadow: 5px 5px 5px 0px var(--theme-dark-gray);
     img {
       width: 100%;
       height: 100%;

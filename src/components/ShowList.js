@@ -1,6 +1,8 @@
-import React from "react";
+import React, { useState } from "react";
+import Overlay from "../components/Overlay";
 import styled from "styled-components";
 import Show from "./Show";
+import ShowModal from "./ShowModal";
 
 const Wrapper = styled.div`
   margin-top: 20px;
@@ -13,11 +15,21 @@ const Wrapper = styled.div`
 `;
 
 const ShowList = () => {
+  const [selectedShow, setSelectedShow] = useState(null);
+  const onViewShowDetails = () => {
+    // alert("works");
+    setSelectedShow(1);
+  };
+  const onHideShowDetails = () => {
+    setSelectedShow(null);
+  };
   return (
     <Wrapper className="container-lg">
+      {selectedShow && <Overlay hideOverlay={onHideShowDetails} />}
+      {selectedShow && <ShowModal />}
       <h1 className="title">Today</h1>
       <div className="row">
-        <div className="col-md-6 col-xl-4">
+        <div className="col-md-6 col-xl-4" onClick={onViewShowDetails}>
           <Show />
         </div>
 

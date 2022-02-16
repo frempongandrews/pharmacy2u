@@ -83,18 +83,17 @@ const navigationItems = [
   {
     id: 2,
     name: "Library",
-    destination: "#",
+    destination: "/library",
   },
   {
     id: 3,
     name: "Your Account",
-    destination: "#",
+    destination: "/account",
   },
 ];
 
 const Header = () => {
   const location = useLocation();
-  console.log("****header match", location);
   const renderNavigationItems = () => {
     return navigationItems.map((item) => {
       return (
@@ -104,7 +103,7 @@ const Header = () => {
             location.pathname === item.destination ? "current-page" : ""
           }
         >
-          <Link to="#">{item.name}</Link>
+          <Link to={item.destination}>{item.name}</Link>
         </li>
       );
     });
@@ -114,7 +113,9 @@ const Header = () => {
       <div className="container-lg inner-wrapper">
         <div className="main-navigation-container">
           <h5 className="logo">
-            <span>TV Maze Browser</span>
+            <Link to="/">
+              <span>TV Maze Browser</span>
+            </Link>
           </h5>
           <ul className="main-navigation">
             {renderNavigationItems()}

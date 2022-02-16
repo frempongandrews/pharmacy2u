@@ -19,27 +19,29 @@ As a viewer, I want to be able to see information about the shows that are being
 
 ## Acceptance Criteria
 
-- A full list of shows broadcast at TVMaze for the current week should be displayed on one screen.
-  - These episodes should be broken down by day.
-  - Each episode should display the episode title, the show title, and the cover image for the show.
-- Clicking on an episode or show title should display information about that episode.
-  - A preview image of the episode should display.
-  - The title and the summary of the episode should display.
-  - The user should be able to navigate to the episode on the relevant online streaming service.
-  - A list of other episodes in the show should be displayed.
-    - The user should be able to navigate to the episode on the relevant online streaming service.
-  - The title, cover image, and summary of the show should be displayed.
+- A full list of shows broadcast at TVMaze for the current week should be displayed on one screen. []
+  - These episodes should be broken down by day. []
+  - Each episode should display the episode title, the show title, and the cover image for the show. []
+- Clicking on an episode or show title should display information about that episode. []
+  - A preview image of the episode should display. []
+  - The title and the summary of the episode should display. []
+  - The user should be able to navigate to the episode on the relevant online streaming service. []
+  - A list of other episodes in the show should be displayed. []
+    - The user should be able to navigate to the episode on the relevant online streaming service. []
+  - The title, cover image, and summary of the show should be displayed. []
 - The app should follow the sketches provided.
 
 ## What We Are Looking For
 
 ### Essential
+
 - Effective use of components for function and design.
 - Modern JavaScript best practices.
 - Expandable clean code.
 - Styling using responsive layouts.
 
 ### Useful
+
 - Adequate unit testing.
 - Highly performant code.
   - Hint: There are many API endpoints. This could be slow.

@@ -1,4 +1,4 @@
-Motivations:
+My motivations:
 
 The following are my motivations for doing what I did in the test.
 
@@ -12,5 +12,14 @@ the Eric Meyers reset. Styled components is the industry standard due to the
 styles being scoped to that specific component and zero risk of class name 
 clashes which can make debugging css very hard.
 
-- 
+- Why I did not use Context API or Redux:
+The shows are "scoped" and relevant only to the HomePage; hence there is no need for the whole application
+to "know" about them. If there was an authentication feature, the user (relevant for the whole application) 
+would have been kept/saved in the application's global state (with context api or redux) to make it easily 
+accessible by any component/page.
+
+
+[] show modal
+[] fetch shows
+[] intersection observer on scroll
 
