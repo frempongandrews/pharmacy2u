@@ -135,7 +135,6 @@ const Wrapper = styled.div`
       font-size: var(--theme-small-font);
       height: 545px;
       overflow: hidden;
-      border: 2px solid;
       .series-image-container {
         overflow: hidden;
         height: 400px;
