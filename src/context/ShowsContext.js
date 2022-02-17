@@ -5,7 +5,8 @@ const ShowsContext = createContext();
 
 const ShowsContextProvider = ({ children }) => {
   const [state, setState] = useState({
-    shows: [],
+    // shows: [{2022-02-17: [{}, {}]}]
+    shows: [{}],
     error: "",
   });
 
@@ -23,7 +24,11 @@ const ShowsContextProvider = ({ children }) => {
       const todaysShows = JSON.parse(localStorage.getItem("shows"))[today];
       setState({
         ...state,
-        shows: [...todaysShows],
+        shows: [
+          {
+            [getTodaysDate()]: todaysShows,
+          },
+        ],
       });
       console.log("*****Got shows from localstorage");
       return;
@@ -32,7 +37,11 @@ const ShowsContextProvider = ({ children }) => {
     if (res.status === 200) {
       setState({
         ...state,
-        shows: [...res.data],
+        shows: [
+          {
+            [getTodaysDate()]: [...res.data],
+          },
+        ],
       });
       if (localStorage.getItem("shows")) {
         const previouslySavedShows = JSON.parse(localStorage.getItem("shows"));
@@ -51,17 +60,16 @@ const ShowsContextProvider = ({ children }) => {
       ...state,
       error: res,
     });
-    console.log("*****res", res);
   };
 
-  const getDays = () => {
-    console.log("****get days");
+  const onFetchShowsForDay = (day) => {
+    console.log("*****onFetchShowsForDay");
   };
-
-  const setShows = () => {};
 
   return (
-    <ShowsContext.Provider value={{ state }}>{children}</ShowsContext.Provider>
+    <ShowsContext.Provider value={{ state, onFetchShowsForDay }}>
+      {children}
+    </ShowsContext.Provider>
   );
 };
 

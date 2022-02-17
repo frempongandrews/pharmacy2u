@@ -1,7 +1,6 @@
 import axios from "axios";
-
+import { format, formatISO, parse, parseISO } from "date-fns";
 import add from "date-fns/add";
-import { formatISO } from "date-fns";
 
 export const api = axios.create({
   baseURL: `https://api.tvmaze.com`,
@@ -18,6 +17,35 @@ export const getDayFromToday = (numberOfDaysFromToday = 0) => {
   });
   const dayInISO = formatISO(dayFns);
   return dayInISO.split("T")[0];
+};
+
+export const getFullDayName = (dateInString) => {
+  const numberOfDay = new Date(formatISO(parseISO(dateInString))).getDay();
+  switch (numberOfDay) {
+    case 0:
+      return "Sunday";
+
+    case 1:
+      return "Monday";
+
+    case 2:
+      return "Tuesday";
+
+    case 3:
+      return "Wednesday";
+
+    case 4:
+      return "Thursday";
+
+    case 5:
+      return "Friday";
+
+    case 6:
+      return "Saturday";
+
+    default:
+      return "Someday";
+  }
 };
 
 export const fetchShowsByDay = async (day = getTodaysDate()) => {
