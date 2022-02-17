@@ -1,9 +1,12 @@
 import React, { useState } from "react";
+import { formatISO } from "date-fns";
+import add from "date-fns/add";
 import Overlay from "../components/Overlay";
 import styled from "styled-components";
 import Show from "./Show";
 import ShowModal from "./ShowModal";
 import { useShows } from "../context/ShowsContext";
+import { getDayFromToday } from "../lib/api";
 
 const Wrapper = styled.div`
   margin-top: 20px;
@@ -45,9 +48,12 @@ const ShowList = () => {
     <Wrapper className="container-lg">
       {selectedShow && <Overlay hideOverlay={onHideShowDetails} />}
       {selectedShow && <ShowModal onHideShowDetails={onHideShowDetails} />}
-      <h1 className="title">Today</h1>
-      {/*row */}
-      <div className="row">{renderShows()}</div>
+      <div>
+        <h1 className="title">Today</h1>
+        {/*row */}
+        <div className="row">{renderShows()}</div>
+      </div>
+
       {/*End row */}
     </Wrapper>
   );
