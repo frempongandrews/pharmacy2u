@@ -93,7 +93,7 @@ const ShowList = () => {
         return dayShows[date].map((show, i) => {
           // console.log("******Show", show);
           // lastEl reached which we load next day
-          if (i === 39) {
+          if (i === dayShows[date].length - 1) {
             return (
               <div
                 className="col-md-6 col-xl-4"
