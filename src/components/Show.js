@@ -1,5 +1,6 @@
 import React from "react";
 import styled from "styled-components";
+import PropTypes from "prop-types";
 
 const Wrapper = styled.div`
   height: 220px;
@@ -31,6 +32,7 @@ const Wrapper = styled.div`
   }
 
   .show-info-container {
+    flex: 1;
     padding: 5px 20px;
     .show-info {
       h4 {
@@ -52,22 +54,38 @@ const Wrapper = styled.div`
   }
 `;
 
-const Show = () => {
+const Show = ({ show }) => {
+  const { season, airtime, airdate } = show;
+  const { name, schedule, network, image } = show.show;
+
+  const formatAirDate = (airdate) => {
+    const airdateArr = airdate.split("-");
+    return airdateArr.reverse().join("/");
+  };
   return (
     <Wrapper>
       <div className="image-container">
-        <img src="https://i.guim.co.uk/img/media/83b3fc2a006d5134779fb2e3728e90b414221205/59_416_4464_2678/master/4464.jpg?width=1200&height=900&quality=85&auto=format&fit=crop&s=543ccd23899cace223c2364d835a99fa" />
+        <img
+          src={`${image?.medium || "/static/image-not-available.png"}`}
+          width={150}
+        />
       </div>
       <div className="show-info-container">
         <div className="show-info">
-          <h4>Good Morning Britain</h4>
-          <p>Series: 12</p>
-          <p>18/01/22</p>
+          <h4>{name}</h4>
+          <p>Series: {season}</p>
+          <p>{formatAirDate(airdate)}</p>
         </div>
-        <p className="show-time">09:00 on ITV</p>
+        <p className="show-time">
+          {airtime} on {network.name}
+        </p>
       </div>
     </Wrapper>
   );
+};
+
+Show.propTypes = {
+  show: PropTypes.object.isRequired,
 };
 
 export default Show;

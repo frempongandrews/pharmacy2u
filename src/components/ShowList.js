@@ -3,6 +3,7 @@ import Overlay from "../components/Overlay";
 import styled from "styled-components";
 import Show from "./Show";
 import ShowModal from "./ShowModal";
+import { useShows } from "../context/ShowsContext";
 
 const Wrapper = styled.div`
   margin-top: 20px;
@@ -23,52 +24,31 @@ const ShowList = () => {
   const onHideShowDetails = () => {
     setSelectedShow(null);
   };
+  const { state } = useShows();
+  const shows = state.shows;
+
+  const renderShows = () => {
+    return shows.map((showObj) => {
+      const show = showObj;
+      return (
+        <div
+          className="col-md-6 col-xl-4"
+          onClick={onViewShowDetails}
+          key={show.id}
+        >
+          <Show show={show} />
+        </div>
+      );
+    });
+  };
   return (
     <Wrapper className="container-lg">
       {selectedShow && <Overlay hideOverlay={onHideShowDetails} />}
       {selectedShow && <ShowModal onHideShowDetails={onHideShowDetails} />}
       <h1 className="title">Today</h1>
-      <div className="row">
-        <div className="col-md-6 col-xl-4" onClick={onViewShowDetails}>
-          <Show />
-        </div>
-
-        <div className="col-md-6 col-xl-4">
-          <Show />
-        </div>
-
-        <div className="col-md-6 col-xl-4">
-          <Show />
-        </div>
-
-        <div className="col-md-6 col-xl-4">
-          <Show />
-        </div>
-
-        <div className="col-md-6 col-xl-4">
-          <Show />
-        </div>
-
-        <div className="col-md-6 col-xl-4">
-          <Show />
-        </div>
-
-        <div className="col-md-6 col-xl-4">
-          <Show />
-        </div>
-
-        <div className="col-md-6 col-xl-4">
-          <Show />
-        </div>
-
-        <div className="col-md-6 col-xl-4">
-          <Show />
-        </div>
-
-        <div className="col-md-6 col-xl-4">
-          <Show />
-        </div>
-      </div>
+      {/*row */}
+      <div className="row">{renderShows()}</div>
+      {/*End row */}
     </Wrapper>
   );
 };
