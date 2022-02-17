@@ -4,6 +4,7 @@ import {
   INCREASE_PAGE_NUMBER,
   SET_SHOWS,
 } from "../actions/actions";
+import { saveShowsToLocalStorage } from "../lib/api";
 
 export const initialState = {
   isFetching: false,

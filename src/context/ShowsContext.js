@@ -25,45 +25,38 @@ const ShowsContextProvider = ({ children }) => {
       JSON.parse(localStorage.getItem("shows"))[today]
     ) {
       const todaysShows = JSON.parse(localStorage.getItem("shows"))[today];
+      console.log("*******todaysShows", todaysShows);
       dispatch({
         type: SET_SHOWS,
         shows: { [today]: todaysShows },
       });
-      //   setState({
-      //     ...state,
-      //     shows: [
-      //       {
-      //         [getTodaysDate()]: todaysShows,
-      //       },
-      //     ],
-      //   });
-      //   console.log("*****Got shows from localstorage");
-      //   return;
+      console.log("*****Got shows from localstorage");
+      return;
     }
 
-    // const res = await fetchShowsByDay();
-    // if (res.status === 200) {
-    //   setState({
-    //     ...state,
-    //     shows: [
-    //       {
-    //         [getTodaysDate()]: [...res.data],
-    //       },
-    //     ],
-    //   });
-    //   if (localStorage.getItem("shows")) {
-    //     const previouslySavedShows = JSON.parse(localStorage.getItem("shows"));
-    //     // updating
-    //     const updatedFetchedShows = previouslySavedShows;
-    //     updatedFetchedShows[today] = res.data;
-    //     localStorage.setItem("shows", JSON.stringify(updatedFetchedShows));
-    //   } else {
-    //     const showsObj = {};
-    //     showsObj[today] = [...res.data];
-    //     localStorage.setItem("shows", JSON.stringify(showsObj));
-    //   }
-    //   return;
-    // }
+    const res = await fetchShowsByDay();
+    console.log("******res", res);
+    if (res.status === 200) {
+      // [getTodaysDate()]: [...res.data],
+      if (localStorage.getItem("shows")) {
+        const previouslySavedShows = JSON.parse(localStorage.getItem("shows"));
+        // updating
+        const updatedFetchedShows = previouslySavedShows;
+        updatedFetchedShows[today] = res.data;
+        localStorage.setItem("shows", JSON.stringify(updatedFetchedShows));
+      } else {
+        const showsObj = {};
+        showsObj[today] = [...res.data];
+        localStorage.setItem("shows", JSON.stringify(showsObj));
+      }
+      dispatch({
+        type: SET_SHOWS,
+        shows: { [getTodaysDate()]: [...res.data] },
+      });
+    }
+
+    return;
+
     // setState({
     //   ...state,
     //   error: res,

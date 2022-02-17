@@ -50,6 +50,7 @@ export const getFullDayName = (dateInString) => {
 
 export const fetchShowsByDay = async (day = getTodaysDate()) => {
   // set day to today
+
   console.log("*****Making API call");
   try {
     //   console.log("******today: ", today);
@@ -59,4 +60,8 @@ export const fetchShowsByDay = async (day = getTodaysDate()) => {
   } catch (err) {
     return err.message;
   }
+};
+
+export const saveShowsToLocalStorage = ({ key, value }) => {
+  localStorage.setItem("shows", JSON.stringify({ key: value }));
 };

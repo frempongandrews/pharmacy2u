@@ -27,7 +27,7 @@ const Wrapper = styled.div`
 const ShowList = () => {
   const { state, dispatch } = useContext(ShowsContext);
   const { isFetching, currentPage } = state;
-  console.log("******state showslist", state);
+  // console.log("******state showslist", state);
   const shows = state.shows;
 
   const observer = useRef();
@@ -54,6 +54,8 @@ const ShowList = () => {
             // });
             dispatch({
               type: FETCH_SHOWS_SUCCESS,
+              key: day,
+              value: [...res.data],
               shows: { [day]: [...res.data] },
             });
             return;
@@ -80,6 +82,8 @@ const ShowList = () => {
   // };
 
   const renderShows = () => {
+    console.log("******Shows", shows);
+
     return shows.map((dayShows) => {
       for (let date in dayShows) {
         console.log("*******Date - day", formatISO(parseISO(date)));
