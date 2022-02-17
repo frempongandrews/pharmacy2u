@@ -1,6 +1,8 @@
 My motivations:
 
-The following are my motivations for doing what I did in the test.
+To begin with, I want to thank you for the opportunity given me to take the test.
+
+The following are some of my motivations for doing what I did in the test.
 
 - Can the project setup be changed?
 I decided to stick with the default setup. Normally I would use a bundler like webpack(the industry standard) to setup a project like this.
@@ -13,12 +15,16 @@ styles being scoped to that specific component and zero risk of class name
 clashes which can make debugging css very hard.
 
 
+Features not implemented due to time:
+- Show detail info in modal
+
+
 Possible improvements:
-- Use of typescript
-- little things in the UI
+- optimization using localstorage: I partially implemented caching for the first load of shows. Can be improved to include
+the other days as well
+- Use of typescript: typescript is synonym of less bugs
+- little things in the UI: There were a few artifacts in the UI that simply needed more time.
+- Testing: I would have used React testing library and stub a few of the props for the Show and ShowList components
+to check if they render properly
 
-
-[] show modal
-[] fetch shows
-[] intersection observer on scroll
 

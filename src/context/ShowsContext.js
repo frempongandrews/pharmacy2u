@@ -1,10 +1,4 @@
-import React, {
-  createContext,
-  useState,
-  useEffect,
-  useContext,
-  useReducer,
-} from "react";
+import React, { createContext, useEffect, useReducer } from "react";
 import { SET_SHOWS } from "../actions/actions";
 import { fetchShowsByDay, getTodaysDate } from "../lib/api";
 import showsReducer, { initialState } from "../reducers/showsReducer";
@@ -25,19 +19,15 @@ const ShowsContextProvider = ({ children }) => {
       JSON.parse(localStorage.getItem("shows"))[today]
     ) {
       const todaysShows = JSON.parse(localStorage.getItem("shows"))[today];
-      console.log("*******todaysShows", todaysShows);
       dispatch({
         type: SET_SHOWS,
         shows: { [today]: todaysShows },
       });
-      console.log("*****Got shows from localstorage");
       return;
     }
 
     const res = await fetchShowsByDay();
-    console.log("******res", res);
     if (res.status === 200) {
-      // [getTodaysDate()]: [...res.data],
       if (localStorage.getItem("shows")) {
         const previouslySavedShows = JSON.parse(localStorage.getItem("shows"));
         // updating

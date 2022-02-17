@@ -1,11 +1,11 @@
 import React, { useContext, useState, useRef, useCallback } from "react";
-import { throttle } from "throttle-debounce";
 import { formatISO, parseISO } from "date-fns";
 import Overlay from "../components/Overlay";
 import styled from "styled-components";
 import Show from "./Show";
 import ShowModal from "./ShowModal";
 import {
+  fetchShowWithEpisodesById,
   fetchShowsByDay,
   getDayFromToday,
   getFullDayName,
@@ -13,10 +13,14 @@ import {
 } from "../lib/api";
 import { ShowsContext } from "../context/ShowsContext";
 import {
+  CLOSE_SHOW_MODAL,
   FETCH_SHOWS_ERROR,
-  FETCH_SHOWS_START,
   FETCH_SHOWS_SUCCESS,
   INCREASE_PAGE_NUMBER,
+  SET_SELECTED_SHOW_ERROR,
+  SET_SELECTED_SHOW_START,
+  SET_SELECTED_SHOW_SUCCESS,
+  SET_SHOWS,
 } from "../actions/actions";
 
 const Wrapper = styled.div`
@@ -32,7 +36,7 @@ const Wrapper = styled.div`
 const ShowList = () => {
   const [canFetch, setCanFetch] = useState(true);
   const { state, dispatch } = useContext(ShowsContext);
-  const { isFetching, currentPage } = state;
+  const { isFetching, currentPage, selectedShow } = state;
   // console.log("******state showslist", state);
   const shows = state.shows;
 
@@ -45,12 +49,12 @@ const ShowList = () => {
         if (entries[0].isIntersecting && currentPage < 7 && canFetch) {
           // setPageNumber(prevPageNumber => prevPageNumber + 1)
           const day = getDayFromToday(currentPage);
-          console.log("*****Day", day);
+
           dispatch({
             type: INCREASE_PAGE_NUMBER,
           });
           const res = await fetchShowsByDay(day);
-          console.log("*******res", res);
+
           if (res.status === 200) {
             saveShowsToLocalStorage({ key: day, value: res.data });
             dispatch({
@@ -60,7 +64,7 @@ const ShowList = () => {
             setCanFetch(false);
             setTimeout(() => {
               setCanFetch(true);
-            }, 1500);
+            }, 800);
 
             return;
           }
@@ -76,34 +80,38 @@ const ShowList = () => {
     [isFetching, currentPage]
   );
 
-  // const [selectedShow, setSelectedShow] = useState(null);
-  // const onViewShowDetails = () => {
-  //   // alert("works");
-  //   setSelectedShow(1);
-  // };
-  // const onHideShowDetails = () => {
-  //   setSelectedShow(null);
-  // };
+  const onViewShowDetails = async (id) => {
+    const res = await fetchShowWithEpisodesById(id);
+
+    if (res.status === 200) {
+      dispatch({
+        type: SET_SELECTED_SHOW_SUCCESS,
+        show: res.data,
+      });
+      return;
+    }
+    dispatch({
+      type: SET_SELECTED_SHOW_ERROR,
+      message: res,
+    });
+  };
+
+  const onHideShowDetails = () => {
+    dispatch({
+      type: CLOSE_SHOW_MODAL,
+    });
+  };
 
   const renderShows = () => {
-    console.log("******Shows", shows);
-
     return shows.map((dayShows) => {
       for (let date in dayShows) {
-        console.log("*******Date - day", formatISO(parseISO(date)));
-
-        console.log(
-          "*******Date - day --",
-          new Date(formatISO(parseISO(date))).getDay()
-        );
         return dayShows[date].map((show, i) => {
-          // console.log("******Show", show);
           // lastEl reached which we load next day
-          if (i === dayShows[date].length - 1) {
+          if (i === Math.floor((dayShows[date].length - 1) / 2)) {
             return (
               <div
                 className="col-md-6 col-xl-4"
-                onClick={null}
+                onClick={() => onViewShowDetails(show.show.id)}
                 key={show.id}
                 ref={lastEl}
               >
@@ -114,7 +122,11 @@ const ShowList = () => {
           return (
             <React.Fragment key={show.id}>
               {i === 0 && <h1 className="title">{getFullDayName(date)}</h1>}
-              <div className="col-md-6 col-xl-4" onClick={null} key={show.id}>
+              <div
+                className="col-md-6 col-xl-4"
+                onClick={() => onViewShowDetails(show.show.id)}
+                key={show.id}
+              >
                 <Show show={show} />
               </div>
             </React.Fragment>
@@ -125,8 +137,8 @@ const ShowList = () => {
   };
   return (
     <Wrapper className="container-lg">
-      {/* {selectedShow && <Overlay hideOverlay={onHideShowDetails} />}
-      {selectedShow && <ShowModal onHideShowDetails={onHideShowDetails} />} */}
+      {selectedShow && <Overlay hideOverlay={onHideShowDetails} />}
+      {selectedShow && <ShowModal onHideShowDetails={onHideShowDetails} />}
       <div>
         {/* <h1 className="title">Today</h1> */}
         {/*row */}

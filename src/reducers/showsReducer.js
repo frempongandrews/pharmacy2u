@@ -1,7 +1,10 @@
 import {
+  CLOSE_SHOW_MODAL,
   FETCH_SHOWS_START,
   FETCH_SHOWS_SUCCESS,
   INCREASE_PAGE_NUMBER,
+  SET_SELECTED_SHOW_ERROR,
+  SET_SELECTED_SHOW_SUCCESS,
   SET_SHOWS,
 } from "../actions/actions";
 import { saveShowsToLocalStorage } from "../lib/api";
@@ -12,11 +15,28 @@ export const initialState = {
   isFinishedFetching: false,
   shows: [],
   currentPage: 1,
+  selectedShow: null,
   error: "",
 };
 
 const showsReducer = (state = initialState, action) => {
   switch (action.type) {
+    case CLOSE_SHOW_MODAL:
+      return {
+        ...state,
+        selectedShow: null,
+      };
+    case SET_SELECTED_SHOW_SUCCESS:
+      return {
+        ...state,
+        selectedShow: action.show,
+      };
+    case SET_SELECTED_SHOW_ERROR:
+      return {
+        ...state,
+        selectedShow: null,
+        error: action.message,
+      };
     case SET_SHOWS:
       return {
         ...state,
