@@ -1,6 +1,6 @@
 import React, { useContext, useState, useRef, useCallback } from "react";
+import { throttle } from "throttle-debounce";
 import { formatISO, parseISO } from "date-fns";
-import add from "date-fns/add";
 import Overlay from "../components/Overlay";
 import styled from "styled-components";
 import Show from "./Show";
@@ -30,6 +30,7 @@ const Wrapper = styled.div`
 `;
 
 const ShowList = () => {
+  const [canFetch, setCanFetch] = useState(true);
   const { state, dispatch } = useContext(ShowsContext);
   const { isFetching, currentPage } = state;
   // console.log("******state showslist", state);
@@ -41,7 +42,7 @@ const ShowList = () => {
       if (isFetching) return;
       if (observer.current) observer.current.disconnect();
       observer.current = new IntersectionObserver(async (entries) => {
-        if (entries[0].isIntersecting && currentPage < 8) {
+        if (entries[0].isIntersecting && currentPage < 7 && canFetch) {
           // setPageNumber(prevPageNumber => prevPageNumber + 1)
           const day = getDayFromToday(currentPage);
           console.log("*****Day", day);
@@ -56,6 +57,11 @@ const ShowList = () => {
               type: FETCH_SHOWS_SUCCESS,
               shows: { [day]: [...res.data] },
             });
+            setCanFetch(false);
+            setTimeout(() => {
+              setCanFetch(true);
+            }, 1500);
+
             return;
           }
 
