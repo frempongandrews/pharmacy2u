@@ -1,15 +1,26 @@
-import React, { createContext, useState, useEffect, useContext } from "react";
+import React, {
+  createContext,
+  useState,
+  useEffect,
+  useContext,
+  useReducer,
+} from "react";
+import { SET_SHOWS } from "../actions/actions";
 import { fetchShowsByDay, getTodaysDate } from "../lib/api";
+import showsReducer from "../reducers/showsReducer";
 
-const ShowsContext = createContext();
+export const ShowsContext = createContext();
+
+const initialState = {
+  isFetching: false,
+  isFetchSuccess: false,
+  isFinishedFetching: false,
+  shows: [],
+  error: "",
+};
 
 const ShowsContextProvider = ({ children }) => {
-  const [state, setState] = useState({
-    // shows: [{2022-02-17: [{}, {}]}]
-    shows: [{}],
-    error: "",
-  });
-
+  const [state, dispatch] = useReducer(showsReducer, initialState);
   useEffect(() => {
     onFetchTodayShows();
   }, []);
@@ -22,61 +33,60 @@ const ShowsContextProvider = ({ children }) => {
       JSON.parse(localStorage.getItem("shows"))[today]
     ) {
       const todaysShows = JSON.parse(localStorage.getItem("shows"))[today];
-      setState({
-        ...state,
-        shows: [
-          {
-            [getTodaysDate()]: todaysShows,
-          },
-        ],
+      dispatch({
+        type: SET_SHOWS,
+        shows: { [today]: todaysShows },
       });
-      console.log("*****Got shows from localstorage");
-      return;
+      //   setState({
+      //     ...state,
+      //     shows: [
+      //       {
+      //         [getTodaysDate()]: todaysShows,
+      //       },
+      //     ],
+      //   });
+      //   console.log("*****Got shows from localstorage");
+      //   return;
     }
-    const res = await fetchShowsByDay();
-    if (res.status === 200) {
-      setState({
-        ...state,
-        shows: [
-          {
-            [getTodaysDate()]: [...res.data],
-          },
-        ],
-      });
-      if (localStorage.getItem("shows")) {
-        const previouslySavedShows = JSON.parse(localStorage.getItem("shows"));
-        // updating
-        const updatedFetchedShows = previouslySavedShows;
-        updatedFetchedShows[today] = res.data;
-        localStorage.setItem("shows", JSON.stringify(updatedFetchedShows));
-      } else {
-        const showsObj = {};
-        showsObj[today] = [...res.data];
-        localStorage.setItem("shows", JSON.stringify(showsObj));
-      }
-      return;
-    }
-    setState({
-      ...state,
-      error: res,
-    });
+
+    // const res = await fetchShowsByDay();
+    // if (res.status === 200) {
+    //   setState({
+    //     ...state,
+    //     shows: [
+    //       {
+    //         [getTodaysDate()]: [...res.data],
+    //       },
+    //     ],
+    //   });
+    //   if (localStorage.getItem("shows")) {
+    //     const previouslySavedShows = JSON.parse(localStorage.getItem("shows"));
+    //     // updating
+    //     const updatedFetchedShows = previouslySavedShows;
+    //     updatedFetchedShows[today] = res.data;
+    //     localStorage.setItem("shows", JSON.stringify(updatedFetchedShows));
+    //   } else {
+    //     const showsObj = {};
+    //     showsObj[today] = [...res.data];
+    //     localStorage.setItem("shows", JSON.stringify(showsObj));
+    //   }
+    //   return;
+    // }
+    // setState({
+    //   ...state,
+    //   error: res,
+    // });
   };
 
-  const onFetchShowsForDay = (day) => {
-    console.log("*****onFetchShowsForDay");
-  };
+  //   const onFetchShowsForDay = (day) => {
+  //     console.log("*****onFetchShowsForDay");
+  //   };
 
   return (
-    <ShowsContext.Provider value={{ state, onFetchShowsForDay }}>
+    <ShowsContext.Provider value={{ state, dispatch }}>
       {children}
     </ShowsContext.Provider>
   );
-};
-
-export const useShows = () => {
-  const shows = useContext(ShowsContext);
-
-  return shows;
 };
 
 export default ShowsContextProvider;
