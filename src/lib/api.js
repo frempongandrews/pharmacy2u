@@ -63,5 +63,15 @@ export const fetchShowsByDay = async (day = getTodaysDate()) => {
 };
 
 export const saveShowsToLocalStorage = ({ key, value }) => {
-  localStorage.setItem("shows", JSON.stringify({ key: value }));
+  if (localStorage.getItem("shows")) {
+    const previousSavedShows = JSON.parse(localStorage.getItem("shows"));
+    const updatedShows = previousSavedShows;
+    updatedShows[key] = value;
+    localStorage.setItem("shows", JSON.stringify(updatedShows));
+  } else {
+    const newShowsData = {
+      [key]: value,
+    };
+    localStorage.setItem("shows", JSON.stringify(newShowsData));
+  }
 };

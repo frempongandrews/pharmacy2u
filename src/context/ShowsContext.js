@@ -56,16 +56,7 @@ const ShowsContextProvider = ({ children }) => {
     }
 
     return;
-
-    // setState({
-    //   ...state,
-    //   error: res,
-    // });
   };
-
-  //   const onFetchShowsForDay = (day) => {
-  //     console.log("*****onFetchShowsForDay");
-  //   };
 
   return (
     <ShowsContext.Provider value={{ state, dispatch }}>

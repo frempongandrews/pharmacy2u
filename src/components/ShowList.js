@@ -5,7 +5,12 @@ import Overlay from "../components/Overlay";
 import styled from "styled-components";
 import Show from "./Show";
 import ShowModal from "./ShowModal";
-import { fetchShowsByDay, getDayFromToday, getFullDayName } from "../lib/api";
+import {
+  fetchShowsByDay,
+  getDayFromToday,
+  getFullDayName,
+  saveShowsToLocalStorage,
+} from "../lib/api";
 import { ShowsContext } from "../context/ShowsContext";
 import {
   FETCH_SHOWS_ERROR,
@@ -43,19 +48,12 @@ const ShowList = () => {
           dispatch({
             type: INCREASE_PAGE_NUMBER,
           });
-          // dispatch({
-          //   type: FETCH_SHOWS_START,
-          // });
           const res = await fetchShowsByDay(day);
           console.log("*******res", res);
           if (res.status === 200) {
-            // dispatch({
-            //   type: INCREASE_PAGE_NUMBER,
-            // });
+            saveShowsToLocalStorage({ key: day, value: res.data });
             dispatch({
               type: FETCH_SHOWS_SUCCESS,
-              key: day,
-              value: [...res.data],
               shows: { [day]: [...res.data] },
             });
             return;
