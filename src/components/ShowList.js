@@ -1,5 +1,4 @@
 import React, { useContext, useState, useRef, useCallback } from "react";
-import { formatISO, parseISO } from "date-fns";
 import Overlay from "../components/Overlay";
 import styled from "styled-components";
 import Show from "./Show";
@@ -18,9 +17,7 @@ import {
   FETCH_SHOWS_SUCCESS,
   INCREASE_PAGE_NUMBER,
   SET_SELECTED_SHOW_ERROR,
-  SET_SELECTED_SHOW_START,
   SET_SELECTED_SHOW_SUCCESS,
-  SET_SHOWS,
 } from "../actions/actions";
 
 const Wrapper = styled.div`
