@@ -1,12 +1,18 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useState, useRef, useCallback } from "react";
 import { formatISO, parseISO } from "date-fns";
 import add from "date-fns/add";
 import Overlay from "../components/Overlay";
 import styled from "styled-components";
 import Show from "./Show";
 import ShowModal from "./ShowModal";
-import { getDayFromToday, getFullDayName } from "../lib/api";
+import { fetchShowsByDay, getDayFromToday, getFullDayName } from "../lib/api";
 import { ShowsContext } from "../context/ShowsContext";
+import {
+  FETCH_SHOWS_ERROR,
+  FETCH_SHOWS_START,
+  FETCH_SHOWS_SUCCESS,
+  INCREASE_PAGE_NUMBER,
+} from "../actions/actions";
 
 const Wrapper = styled.div`
   margin-top: 20px;
@@ -20,8 +26,49 @@ const Wrapper = styled.div`
 
 const ShowList = () => {
   const { state, dispatch } = useContext(ShowsContext);
+  const { isFetching, currentPage } = state;
   console.log("******state showslist", state);
   const shows = state.shows;
+
+  const observer = useRef();
+  const lastEl = useCallback(
+    async (node) => {
+      if (isFetching) return;
+      if (observer.current) observer.current.disconnect();
+      observer.current = new IntersectionObserver(async (entries) => {
+        if (entries[0].isIntersecting && currentPage < 8) {
+          // setPageNumber(prevPageNumber => prevPageNumber + 1)
+          const day = getDayFromToday(currentPage);
+          console.log("*****Day", day);
+          dispatch({
+            type: INCREASE_PAGE_NUMBER,
+          });
+          // dispatch({
+          //   type: FETCH_SHOWS_START,
+          // });
+          const res = await fetchShowsByDay(day);
+          console.log("*******res", res);
+          if (res.status === 200) {
+            // dispatch({
+            //   type: INCREASE_PAGE_NUMBER,
+            // });
+            dispatch({
+              type: FETCH_SHOWS_SUCCESS,
+              shows: { [day]: [...res.data] },
+            });
+            return;
+          }
+
+          dispatch({
+            type: FETCH_SHOWS_ERROR,
+            message: res,
+          });
+        }
+      });
+      if (node) observer.current.observe(node);
+    },
+    [isFetching, currentPage]
+  );
 
   // const [selectedShow, setSelectedShow] = useState(null);
   // const onViewShowDetails = () => {
@@ -43,6 +90,19 @@ const ShowList = () => {
         );
         return dayShows[date].map((show, i) => {
           // console.log("******Show", show);
+          // lastEl reached which we load next day
+          if (i === 39) {
+            return (
+              <div
+                className="col-md-6 col-xl-4"
+                onClick={null}
+                key={show.id}
+                ref={lastEl}
+              >
+                <Show show={show} />
+              </div>
+            );
+          }
           return (
             <React.Fragment key={show.id}>
               {i === 0 && <h1 className="title">{getFullDayName(date)}</h1>}

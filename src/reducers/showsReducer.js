@@ -1,6 +1,11 @@
-import { SET_SHOWS } from "../actions/actions";
+import {
+  FETCH_SHOWS_START,
+  FETCH_SHOWS_SUCCESS,
+  INCREASE_PAGE_NUMBER,
+  SET_SHOWS,
+} from "../actions/actions";
 
-const initialState = {
+export const initialState = {
   isFetching: false,
   isFetchSuccess: false,
   isFinishedFetching: false,
@@ -15,6 +20,30 @@ const showsReducer = (state = initialState, action) => {
       return {
         ...state,
         shows: [...state.shows, action.shows],
+      };
+
+    case FETCH_SHOWS_START:
+      return {
+        ...state,
+        isFetching: true,
+      };
+
+    case FETCH_SHOWS_SUCCESS:
+      return {
+        ...state,
+        shows: [...state.shows, action.shows],
+      };
+
+    case INCREASE_PAGE_NUMBER:
+      return {
+        ...state,
+        currentPage: state.currentPage + 1,
+      };
+
+    case DECREASE_PAGE_NUMBER:
+      return {
+        ...state,
+        currentPage: state.currentPage - 1,
       };
     default:
       return state;

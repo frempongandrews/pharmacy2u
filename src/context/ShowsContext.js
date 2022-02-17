@@ -7,17 +7,9 @@ import React, {
 } from "react";
 import { SET_SHOWS } from "../actions/actions";
 import { fetchShowsByDay, getTodaysDate } from "../lib/api";
-import showsReducer from "../reducers/showsReducer";
+import showsReducer, { initialState } from "../reducers/showsReducer";
 
 export const ShowsContext = createContext();
-
-const initialState = {
-  isFetching: false,
-  isFetchSuccess: false,
-  isFinishedFetching: false,
-  shows: [],
-  error: "",
-};
 
 const ShowsContextProvider = ({ children }) => {
   const [state, dispatch] = useReducer(showsReducer, initialState);
