@@ -133,11 +133,23 @@ const Wrapper = styled.div`
     }
     .about-container {
       font-size: var(--theme-small-font);
-      height: 545px;
       overflow: hidden;
+      @media screen and (max-width: 992px) {
+        margin-top: 20px;
+      }
+      @media screen and (min-width: 992px) {
+        height: 545px;
+      }
       .series-image-container {
         overflow: hidden;
-        height: 400px;
+        img {
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+          @media screen and (min-width: 992px) {
+            height: 400px;
+          }
+        }
       }
     }
   }
@@ -299,10 +311,7 @@ const ShowModal = ({ onHideShowDetails }) => {
             <p className="title">About the series</p>
             {/*image container */}
             <div className="series-image-container">
-              <img
-                src="https://static.tvmaze.com/uploads/images/original_untouched/81/202627.jpg"
-                height={400}
-              />
+              <img src="https://static.tvmaze.com/uploads/images/original_untouched/81/202627.jpg" />
             </div>
             {/*End image container */}
             {/* series description*/}
