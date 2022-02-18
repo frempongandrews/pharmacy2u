@@ -18,7 +18,10 @@ const ShowsContextProvider = ({ children }) => {
       JSON.parse(localStorage.getItem("shows")) &&
       JSON.parse(localStorage.getItem("shows"))[today]
     ) {
-      const todaysShows = JSON.parse(localStorage.getItem("shows"))[today];
+      // const todaysShows = JSON.parse(localStorage.getItem("shows"))[today];
+      const cachedShows = JSON.parse(localStorage.getItem("shows"));
+      const todaysShows = cachedShows[today];
+
       dispatch({
         type: SET_SHOWS,
         shows: { [today]: todaysShows },

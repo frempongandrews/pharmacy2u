@@ -1,5 +1,6 @@
 import {
   CLOSE_SHOW_MODAL,
+  DECREASE_PAGE_NUMBER,
   FETCH_SHOWS_START,
   FETCH_SHOWS_SUCCESS,
   INCREASE_PAGE_NUMBER,
@@ -13,6 +14,7 @@ export const initialState = {
   isFetching: false,
   isFetchSuccess: false,
   isFinishedFetching: false,
+  canFetch: true,
   shows: [],
   currentPage: 1,
   selectedShow: null,

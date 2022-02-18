@@ -18,6 +18,7 @@ import {
   INCREASE_PAGE_NUMBER,
   SET_SELECTED_SHOW_ERROR,
   SET_SELECTED_SHOW_SUCCESS,
+  TEST_ACTION,
 } from "../actions/actions";
 
 const Wrapper = styled.div`
@@ -31,9 +32,8 @@ const Wrapper = styled.div`
 `;
 
 const ShowList = () => {
-  const [canFetch, setCanFetch] = useState(true);
   const { state, dispatch } = useContext(ShowsContext);
-  const { isFetching, currentPage, selectedShow } = state;
+  const { isFetching, currentPage, selectedShow, canFetch } = state;
   // console.log("******state showslist", state);
   const shows = state.shows;
 
@@ -43,14 +43,18 @@ const ShowList = () => {
       if (isFetching) return;
       if (observer.current) observer.current.disconnect();
       observer.current = new IntersectionObserver(async (entries) => {
-        if (entries[0].isIntersecting && currentPage < 7 && canFetch) {
-          // setPageNumber(prevPageNumber => prevPageNumber + 1)
+        if (entries[0].isIntersecting) {
+          if (currentPage === 7) {
+            return;
+          }
+
           const day = getDayFromToday(currentPage);
+
+          const res = await fetchShowsByDay(day);
 
           dispatch({
             type: INCREASE_PAGE_NUMBER,
           });
-          const res = await fetchShowsByDay(day);
 
           if (res.status === 200) {
             saveShowsToLocalStorage({ key: day, value: res.data });
@@ -58,11 +62,6 @@ const ShowList = () => {
               type: FETCH_SHOWS_SUCCESS,
               shows: { [day]: [...res.data] },
             });
-            setCanFetch(false);
-            setTimeout(() => {
-              setCanFetch(true);
-            }, 800);
-
             return;
           }
 
@@ -74,7 +73,7 @@ const ShowList = () => {
       });
       if (node) observer.current.observe(node);
     },
-    [isFetching, currentPage]
+    [isFetching, currentPage, canFetch]
   );
 
   const onViewShowDetails = async (id) => {
