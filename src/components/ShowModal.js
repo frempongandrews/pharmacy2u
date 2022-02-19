@@ -210,9 +210,7 @@ const ShowModal = ({ onHideShowDetails, selectedShow }) => {
             <FaPlay className="play-btn" />
             <img
               src={`${
-                episode?.image ||
-                episode?.image?.medium ||
-                "/static/image-not-available.png"
+                episode?.image?.medium || "/static/image-not-available.png"
               }`}
               width="180px"
             />
