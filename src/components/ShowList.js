@@ -9,6 +9,7 @@ import {
   getDayFromToday,
   getFullDayName,
   saveShowsToLocalStorage,
+  getTodaysDate,
 } from "../lib/api";
 import { ShowsContext } from "../context/ShowsContext";
 import {
@@ -37,6 +38,7 @@ const ShowList = () => {
   // console.log("******state showslist", state);
   const shows = state.shows;
 
+  // infinite scroll (for next 7 days)
   const observer = useRef();
   const lastEl = useCallback(
     async (node) => {
@@ -117,7 +119,13 @@ const ShowList = () => {
           }
           return (
             <React.Fragment key={show.id}>
-              {i === 0 && <h1 className="title">{getFullDayName(date)}</h1>}
+              {i === 0 && (
+                <h1 className="title">
+                  {getFullDayName(date) === getFullDayName(getTodaysDate())
+                    ? "Today"
+                    : getFullDayName(date)}
+                </h1>
+              )}
               <div
                 className="col-md-6 col-xl-4"
                 onClick={() => onViewShowDetails(show.show.id)}
