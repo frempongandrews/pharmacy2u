@@ -220,6 +220,7 @@ const ShowModal = ({ onHideShowDetails, selectedShow }) => {
             className="episode-description-container"
             dangerouslySetInnerHTML={renderSanitizedHtmlString({
               htmlString: episode?.summary || unavailableMsg,
+              length: 200,
             })}
           />
         </div>
