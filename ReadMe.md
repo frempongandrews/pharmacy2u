@@ -35,13 +35,13 @@ As a viewer, I want to be able to see information about the shows that are being
 
 ### Essential
 
-- Effective use of components for function and design.
-- Modern JavaScript best practices.
-- Expandable clean code.
-- Styling using responsive layouts.
+- Effective use of components for function and design. [✅]
+- Modern JavaScript best practices. [✅]
+- Expandable clean code. [✅]
+- Styling using responsive layouts. [✅]
 
 ### Useful
 
-- Adequate unit testing.
-- Highly performant code.
+- Adequate unit testing. [TODO]
+- Highly performant code. [✅]
   - Hint: There are many API endpoints. This could be slow.
