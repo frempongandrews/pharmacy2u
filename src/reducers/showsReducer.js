@@ -8,13 +8,11 @@ import {
   SET_SELECTED_SHOW_SUCCESS,
   SET_SHOWS,
 } from "../actions/actions";
-import { saveShowsToLocalStorage } from "../lib/api";
 
 export const initialState = {
   isFetching: false,
   isFetchSuccess: false,
   isFinishedFetching: false,
-  canFetch: true,
   shows: [],
   currentPage: 1,
   selectedShow: null,

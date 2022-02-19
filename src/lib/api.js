@@ -97,3 +97,7 @@ export const saveShowsToLocalStorage = ({ key, value }) => {
     localStorage.setItem("shows", JSON.stringify(newShowsData));
   }
 };
+
+export const getCachedShowsFromLocalStorage = () => {
+  return JSON.parse(localStorage.getItem("shows"));
+};

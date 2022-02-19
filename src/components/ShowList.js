@@ -1,4 +1,4 @@
-import React, { useContext, useState, useRef, useCallback } from "react";
+import React, { useContext, useEffect, useRef, useCallback } from "react";
 import Overlay from "../components/Overlay";
 import styled from "styled-components";
 import Show from "./Show";
@@ -10,6 +10,7 @@ import {
   getFullDayName,
   saveShowsToLocalStorage,
   getTodaysDate,
+  getCachedShowsFromLocalStorage,
 } from "../lib/api";
 import { ShowsContext } from "../context/ShowsContext";
 import {
@@ -19,6 +20,7 @@ import {
   INCREASE_PAGE_NUMBER,
   SET_SELECTED_SHOW_ERROR,
   SET_SELECTED_SHOW_SUCCESS,
+  SET_SHOWS,
   TEST_ACTION,
 } from "../actions/actions";
 
@@ -34,9 +36,12 @@ const Wrapper = styled.div`
 
 const ShowList = () => {
   const { state, dispatch } = useContext(ShowsContext);
-  const { isFetching, currentPage, selectedShow, canFetch } = state;
-  // console.log("******state showslist", state);
+  const { isFetching, currentPage, selectedShow } = state;
   const shows = state.shows;
+
+  useEffect(() => {
+    console.log("********useEffect state", state);
+  });
 
   // infinite scroll (for next 7 days)
   const observer = useRef();
@@ -51,6 +56,19 @@ const ShowList = () => {
           }
 
           const day = getDayFromToday(currentPage);
+          // before fetching check cache
+          if (getCachedShowsFromLocalStorage()[day]) {
+            const cachedShowsForDay = getCachedShowsFromLocalStorage()[day];
+            dispatch({
+              type: SET_SHOWS,
+              shows: { [day]: cachedShowsForDay },
+            });
+            dispatch({
+              type: INCREASE_PAGE_NUMBER,
+            });
+            console.log("*****Used cached data!!");
+            return;
+          }
 
           const res = await fetchShowsByDay(day);
 
@@ -75,7 +93,7 @@ const ShowList = () => {
       });
       if (node) observer.current.observe(node);
     },
-    [isFetching, currentPage, canFetch]
+    [isFetching, currentPage]
   );
 
   const onViewShowDetails = async (id) => {
