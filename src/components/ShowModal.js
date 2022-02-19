@@ -156,6 +156,9 @@ const Wrapper = styled.div`
           }
         }
       }
+      .series-summary-container p {
+        margin: 0;
+      }
     }
   }
   @media screen and (max-width: 992px) {
@@ -169,9 +172,26 @@ const ShowModal = ({ onHideShowDetails, selectedShow }) => {
   const { name, episodeNumber, summary, image, network, officialSite } =
     selectedShow.showDetails;
 
-  const renderSanitizedShowSummary = () => ({
-    __html: DOMPurify.sanitize(summary),
-  });
+  const renderSanitizedShowSummary = (length) => {
+    if (!length) {
+      return {
+        __html: DOMPurify.sanitize(summary, { FORBID_TAGS: ["br"] }),
+      };
+    }
+    if (length > DOMPurify.sanitize(summary).length) {
+      return {
+        __html: DOMPurify.sanitize(summary, { FORBID_TAGS: ["br"] }),
+      };
+    }
+
+    if (length < DOMPurify.sanitize(summary).length) {
+      const pureSummary = DOMPurify.sanitize(summary, { FORBID_TAGS: ["br"] });
+      const shortPureSummary = pureSummary.slice(0, length) + "...";
+      return {
+        __html: shortPureSummary,
+      };
+    }
+  };
   return (
     <Wrapper className="">
       <span className="close-modal" onClick={onHideShowDetails}>
@@ -191,9 +211,7 @@ const ShowModal = ({ onHideShowDetails, selectedShow }) => {
         </div>
         <img
           className="show-cover-image"
-          src={
-            "https://static.tvmaze.com/uploads/images/original_untouched/257/642675.jpg"
-          }
+          src={`${image?.original || "/static/image-not-available.png"}`}
         />
       </div>
       {/*End show-image-container */}
@@ -322,16 +340,17 @@ const ShowModal = ({ onHideShowDetails, selectedShow }) => {
             <p className="title">About the series</p>
             {/*image container */}
             <div className="series-image-container">
-              <img src="https://static.tvmaze.com/uploads/images/original_untouched/81/202627.jpg" />
+              <img
+                src={`${image?.original || "/static/image-not-available.png"}`}
+              />
             </div>
             {/*End image container */}
             {/* series description*/}
-            <p>
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-              eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
-              enim ad minim veniam, quis nostrud exercitation ullamco laboris
-              nisi ut aliquip ex ea commodo
-            </p>
+            <div
+              className="series-summary-container"
+              dangerouslySetInnerHTML={renderSanitizedShowSummary(200)}
+            />
+
             {/* End series description*/}
           </div>
           {/*End About container */}
