@@ -123,7 +123,7 @@ const Wrapper = styled.div`
         position: relative;
         .play-btn {
           position: absolute;
-          top: 50px;
+          top: 70px;
           right: 50%;
           transform: translate(-50%, -50%);
         }
@@ -168,9 +168,12 @@ const Wrapper = styled.div`
   }
 `;
 
+const unavailableMsg = "<p>Unfortunately this data is not available</p>";
+
 const ShowModal = ({ onHideShowDetails, selectedShow }) => {
   const { name, episodeNumber, summary, image, network, officialSite } =
     selectedShow.showDetails;
+  const { showEpisodesList } = selectedShow;
 
   const renderSanitizedHtmlString = ({ htmlString, length }) => {
     if (!length) {
@@ -193,6 +196,35 @@ const ShowModal = ({ onHideShowDetails, selectedShow }) => {
         __html: shortHtmlString,
       };
     }
+  };
+
+  const renderShowEpisodes = () => {
+    return showEpisodesList.map((episode) => {
+      return (
+        <div className="episode-container" key={episode.id}>
+          <p className="title">
+            Series {episode.season} - Episode {episode.number}
+          </p>
+          <div className="episode-image-container">
+            <FaPlay className="play-btn" />
+            <img
+              src={`${
+                episode?.image ||
+                episode?.image?.medium ||
+                "/static/image-not-available.png"
+              }`}
+              width="180px"
+            />
+          </div>
+          <div
+            className="episode-description-container"
+            dangerouslySetInnerHTML={renderSanitizedHtmlString({
+              htmlString: episode?.summary || unavailableMsg,
+            })}
+          />
+        </div>
+      );
+    });
   };
   return (
     <Wrapper className="">
@@ -229,114 +261,7 @@ const ShowModal = ({ onHideShowDetails, selectedShow }) => {
         <div className="row episodes-container">
           {/* col */}
           <div className="col-lg-8 episodes-inner-container">
-            {/*single episode */}
-            <div className="episode-container">
-              <p className="title">Series 1 - Episode 1</p>
-              <div className="episode-image-container">
-                <FaPlay className="play-btn" />
-                <img
-                  src="https://static.tvmaze.com/uploads/images/original_untouched/1/4392.jpg"
-                  width="180px"
-                />
-              </div>
-              <div className="episode-description-container">
-                <p>
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed
-                  do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-                  Ut enim ad minim veniam...{" "}
-                </p>
-              </div>
-            </div>
-
-            {/*single episode */}
-            <div className="episode-container">
-              <p className="title">Series 1 - Episode 1</p>
-              <div className="episode-image-container">
-                <img
-                  src="https://static.tvmaze.com/uploads/images/original_untouched/1/4392.jpg"
-                  width="180px"
-                />
-              </div>
-              <div className="episode-description-container">
-                <p>
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed
-                  do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-                  Ut enim ad minim veniam...{" "}
-                </p>
-              </div>
-            </div>
-
-            {/*single episode */}
-            <div className="episode-container">
-              <p className="title">Series 1 - Episode 1</p>
-              <div className="episode-image-container">
-                <img
-                  src="https://static.tvmaze.com/uploads/images/original_untouched/1/4392.jpg"
-                  width="180px"
-                />
-              </div>
-              <div className="episode-description-container">
-                <p>
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed
-                  do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-                  Ut enim ad minim veniam...{" "}
-                </p>
-              </div>
-            </div>
-
-            {/*single episode */}
-            <div className="episode-container">
-              <p className="title">Series 1 - Episode 1</p>
-              <div className="episode-image-container">
-                <img
-                  src="https://static.tvmaze.com/uploads/images/original_untouched/1/4392.jpg"
-                  width="180px"
-                />
-              </div>
-              <div className="episode-description-container">
-                <p>
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed
-                  do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-                  Ut enim ad minim veniam...{" "}
-                </p>
-              </div>
-            </div>
-
-            {/*single episode */}
-            <div className="episode-container">
-              <p className="title">Series 1 - Episode 1</p>
-              <div className="episode-image-container">
-                <img
-                  src="https://static.tvmaze.com/uploads/images/original_untouched/1/4392.jpg"
-                  width="180px"
-                />
-              </div>
-              <div className="episode-description-container">
-                <p>
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed
-                  do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-                  Ut enim ad minim veniam...{" "}
-                </p>
-              </div>
-            </div>
-
-            {/*single episode */}
-            <div className="episode-container">
-              <p className="title">Series 1 - Episode 1</p>
-              <div className="episode-image-container">
-                <img
-                  src="https://static.tvmaze.com/uploads/images/original_untouched/1/4392.jpg"
-                  width="180px"
-                />
-              </div>
-              <div className="episode-description-container">
-                <p>
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed
-                  do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-                  Ut enim ad minim veniam...{" "}
-                </p>
-              </div>
-            </div>
+            {renderShowEpisodes()}
           </div>
           {/*End col */}
           {/*About container */}
