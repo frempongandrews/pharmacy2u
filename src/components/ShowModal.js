@@ -172,7 +172,7 @@ const Wrapper = styled.div`
 const unavailableMsg = "<p>Unfortunately this data is not available</p>";
 
 const ShowModal = ({ onHideShowDetails, selectedShow }) => {
-  const { name, episodeNumber, summary, image, network, officialSite } =
+  const { name, episodeNumber, summary, image, officialSite } =
     selectedShow.showDetails;
   const { showEpisodesList } = selectedShow;
 
@@ -240,11 +240,13 @@ const ShowModal = ({ onHideShowDetails, selectedShow }) => {
         <p className="show-title">
           {name} - Episode {episodeNumber}
         </p>
-        <div className="play-btn-container">
-          <div className="play-btn-inner-container">
-            <FaPlay className="play-btn" />
+        <a href={`${officialSite ? officialSite : "#"}`} target="_blank">
+          <div className="play-btn-container">
+            <div className="play-btn-inner-container">
+              <FaPlay className="play-btn" />
+            </div>
           </div>
-        </div>
+        </a>
         <img
           className="show-cover-image"
           src={`${image?.original || "/static/image-not-available.png"}`}

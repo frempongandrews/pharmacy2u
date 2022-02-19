@@ -134,6 +134,7 @@ const ShowList = () => {
     return shows.map((dayShows) => {
       for (let date in dayShows) {
         return dayShows[date].map((show, i) => {
+          console.log("******show", show);
           // lastEl reached which we load next day
           if (i === Math.floor((dayShows[date].length - 1) / 2)) {
             return (

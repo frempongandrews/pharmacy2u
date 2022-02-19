@@ -56,6 +56,7 @@ const Wrapper = styled.div`
 
 const Show = ({ show }) => {
   const { season, airtime, airdate } = show;
+  const showName = show.name;
   const { name, schedule, network, image } = show.show;
 
   const formatAirDate = (airdate) => {
@@ -74,7 +75,7 @@ const Show = ({ show }) => {
         <div className="show-info">
           <h4>{name}</h4>
           <p>Series: {season}</p>
-          <p>{formatAirDate(airdate)}</p>
+          <p>{showName}</p>
         </div>
         <p className="show-time">
           {airtime} on {network.name}
