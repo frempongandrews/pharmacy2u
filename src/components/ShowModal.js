@@ -172,23 +172,25 @@ const ShowModal = ({ onHideShowDetails, selectedShow }) => {
   const { name, episodeNumber, summary, image, network, officialSite } =
     selectedShow.showDetails;
 
-  const renderSanitizedShowSummary = (length) => {
+  const renderSanitizedHtmlString = ({ htmlString, length }) => {
     if (!length) {
       return {
-        __html: DOMPurify.sanitize(summary, { FORBID_TAGS: ["br"] }),
+        __html: DOMPurify.sanitize(htmlString, { FORBID_TAGS: ["br"] }),
       };
     }
-    if (length > DOMPurify.sanitize(summary).length) {
+    if (length > DOMPurify.sanitize(htmlString).length) {
       return {
-        __html: DOMPurify.sanitize(summary, { FORBID_TAGS: ["br"] }),
+        __html: DOMPurify.sanitize(htmlString, { FORBID_TAGS: ["br"] }),
       };
     }
 
-    if (length < DOMPurify.sanitize(summary).length) {
-      const pureSummary = DOMPurify.sanitize(summary, { FORBID_TAGS: ["br"] });
-      const shortPureSummary = pureSummary.slice(0, length) + "...";
+    if (length < DOMPurify.sanitize(htmlString).length) {
+      const pureHtmlString = DOMPurify.sanitize(htmlString, {
+        FORBID_TAGS: ["br"],
+      });
+      const shortHtmlString = pureHtmlString.slice(0, length) + "...";
       return {
-        __html: shortPureSummary,
+        __html: shortHtmlString,
       };
     }
   };
@@ -218,7 +220,9 @@ const ShowModal = ({ onHideShowDetails, selectedShow }) => {
       <div className="content">
         <p
           className="description"
-          dangerouslySetInnerHTML={renderSanitizedShowSummary()}
+          dangerouslySetInnerHTML={renderSanitizedHtmlString({
+            htmlString: summary,
+          })}
         />
 
         {/*Espisodes container */}
@@ -348,7 +352,10 @@ const ShowModal = ({ onHideShowDetails, selectedShow }) => {
             {/* series description*/}
             <div
               className="series-summary-container"
-              dangerouslySetInnerHTML={renderSanitizedShowSummary(200)}
+              dangerouslySetInnerHTML={renderSanitizedHtmlString({
+                htmlString: summary,
+                length: 200,
+              })}
             />
 
             {/* End series description*/}
