@@ -93,6 +93,10 @@ const Wrapper = styled.div`
     .episodes-inner-container {
       height: 510px;
       overflow-y: scroll;
+      &::-webkit-scrollbar {
+        -webkit-appearance: none;
+        width: 7px;
+      }
     }
     .episode-container {
       display: flex;
