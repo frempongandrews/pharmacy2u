@@ -21,7 +21,6 @@ import {
   SET_SELECTED_SHOW_ERROR,
   SET_SELECTED_SHOW_SUCCESS,
   SET_SHOWS,
-  TEST_ACTION,
 } from "../actions/actions";
 
 const Wrapper = styled.div`
@@ -96,8 +95,10 @@ const ShowList = () => {
     [isFetching, currentPage]
   );
 
-  const onViewShowDetails = async (id) => {
-    const res = await fetchShowWithEpisodesById(id);
+  const onViewShowDetails = async ({ id, date }) => {
+    console.log("*****id - date", { id, date });
+    // TODO: check if show has been viewd before
+    const res = await fetchShowWithEpisodesById({ id, date });
 
     if (res.status === 200) {
       dispatch({
@@ -127,7 +128,7 @@ const ShowList = () => {
             return (
               <div
                 className="col-md-6 col-xl-4"
-                onClick={() => onViewShowDetails(show.show.id)}
+                onClick={() => onViewShowDetails({ id: show.show.id, date })}
                 key={show.id}
                 ref={lastEl}
               >
@@ -146,7 +147,7 @@ const ShowList = () => {
               )}
               <div
                 className="col-md-6 col-xl-4"
-                onClick={() => onViewShowDetails(show.show.id)}
+                onClick={() => onViewShowDetails({ id: show.show.id, date })}
                 key={show.id}
               >
                 <Show show={show} />
@@ -160,7 +161,12 @@ const ShowList = () => {
   return (
     <Wrapper className="container-lg">
       {selectedShow && <Overlay hideOverlay={onHideShowDetails} />}
-      {selectedShow && <ShowModal onHideShowDetails={onHideShowDetails} />}
+      {selectedShow && (
+        <ShowModal
+          onHideShowDetails={onHideShowDetails}
+          selectedShow={selectedShow}
+        />
+      )}
       <div>
         {/* <h1 className="title">Today</h1> */}
         {/*row */}

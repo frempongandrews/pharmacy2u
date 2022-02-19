@@ -1,5 +1,6 @@
 import React from "react";
 import styled from "styled-components";
+import DOMPurify from "dompurify";
 import PropTypes from "prop-types";
 import { FaPlay } from "react-icons/fa";
 
@@ -164,7 +165,13 @@ const Wrapper = styled.div`
   }
 `;
 
-const ShowModal = ({ onHideShowDetails }) => {
+const ShowModal = ({ onHideShowDetails, selectedShow }) => {
+  const { name, episodeNumber, summary, image, network, officialSite } =
+    selectedShow.showDetails;
+
+  const renderSanitizedShowSummary = () => ({
+    __html: DOMPurify.sanitize(summary),
+  });
   return (
     <Wrapper className="">
       <span className="close-modal" onClick={onHideShowDetails}>
@@ -174,7 +181,9 @@ const ShowModal = ({ onHideShowDetails }) => {
       {/*show-image-container */}
 
       <div className="show-image-container">
-        <p className="show-title">In paradise - Episode 3</p>
+        <p className="show-title">
+          {name} - Episode {episodeNumber}
+        </p>
         <div className="play-btn-container">
           <div className="play-btn-inner-container">
             <FaPlay className="play-btn" />
@@ -189,12 +198,10 @@ const ShowModal = ({ onHideShowDetails }) => {
       </div>
       {/*End show-image-container */}
       <div className="content">
-        <p className="description">
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque
-          ultricies nec mauris a mattis. Aenean vel scelerisque leo, elementum
-          rhoncus risus. Nunc dictum ipsum sed enim tempor, ut interdum lectus
-          pulvinar.
-        </p>
+        <p
+          className="description"
+          dangerouslySetInnerHTML={renderSanitizedShowSummary()}
+        />
 
         {/*Espisodes container */}
         <div className="row episodes-container">
@@ -337,6 +344,7 @@ const ShowModal = ({ onHideShowDetails }) => {
 
 ShowModal.propTypes = {
   onHideShowDetails: PropTypes.func.isRequired,
+  selectedShow: PropTypes.object,
 };
 
 export default ShowModal;

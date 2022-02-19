@@ -19,18 +19,31 @@ export const fetchShowsByDay = async (day = getTodaysDate()) => {
   }
 };
 
-export const fetchShowWithEpisodesById = async (id) => {
+export const fetchShowWithEpisodesById = async ({ id, date }) => {
+  // date: used to get the episode number on the selected day
   try {
     const showRes = await api.get(`/shows/${id}`);
     const showEpisodesRes = await api.get(`/shows/${id}/episodes`);
+    const showDetails = { ...showRes.data };
+    const showEpisodesList = [...showEpisodesRes.data];
+    let episodeNumber;
+    let i = showEpisodesList.length - 1;
+
+    while (i > 0) {
+      let episode = showEpisodesList[i];
+      if (episode.airdate.trim() === date.trim()) {
+        episodeNumber = episode.number;
+        break;
+      }
+      i--;
+    }
     const res = {
       data: {
         showDetails: {
-          ...showRes.data,
+          ...showDetails,
+          episodeNumber,
         },
-        showEpisodesList: {
-          ...showEpisodesRes.data,
-        },
+        showEpisodesList,
       },
       status: showRes.status,
     };
@@ -85,6 +98,7 @@ export const getFullDayName = (dateInString) => {
 };
 
 export const saveShowsToLocalStorage = ({ key, value }) => {
+  // shows => { "2022-02-19": [{}, {}]}
   if (localStorage.getItem("shows")) {
     const previousSavedShows = JSON.parse(localStorage.getItem("shows"));
     const updatedShows = previousSavedShows;
@@ -100,4 +114,25 @@ export const saveShowsToLocalStorage = ({ key, value }) => {
 
 export const getCachedShowsFromLocalStorage = () => {
   return JSON.parse(localStorage.getItem("shows"));
+};
+
+export const saveSingleShowToLocalStorage = ({ key, value }) => {
+  // singleShow => { "123": {showDetails: {}, showEpisodesList: {}}, "456": ... }
+  if (localStorage.getItem("singleShows")) {
+    const previousSavedSingleShows = JSON.parse(
+      localStorage.getItem("singleShows")
+    );
+    const updatedSingleShows = previousSavedSingleShows;
+    updatedSingleShows[key] = value;
+    localStorage.setItem("singleShows", JSON.stringify(updatedSingleShows));
+  } else {
+    const newSingleShowsData = {
+      [key]: value,
+    };
+    localStorage.setItem("singleShows", JSON.stringify(newSingleShowsData));
+  }
+};
+
+export const getCachedSingleShowsFromLocalStorage = () => {
+  return JSON.parse(localStorage.getItem("singleShows"));
 };
