@@ -6,6 +6,7 @@ import { FaPlay } from "react-icons/fa";
 
 const Wrapper = styled.div`
   z-index: 300;
+  min-width: 480px;
   position: fixed;
   border-radius: 8px;
   border: 1px solid var(--theme-black);

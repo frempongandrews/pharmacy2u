@@ -11,6 +11,8 @@ import {
   saveShowsToLocalStorage,
   getTodaysDate,
   getCachedShowsFromLocalStorage,
+  saveSingleShowToLocalStorage,
+  getCachedSingleShowsFromLocalStorage,
 } from "../lib/api";
 import { ShowsContext } from "../context/ShowsContext";
 import {
@@ -38,10 +40,6 @@ const ShowList = () => {
   const { isFetching, currentPage, selectedShow } = state;
   const shows = state.shows;
 
-  useEffect(() => {
-    console.log("********useEffect state", state);
-  });
-
   // infinite scroll (for next 7 days)
   const observer = useRef();
   const lastEl = useCallback(
@@ -65,7 +63,7 @@ const ShowList = () => {
             dispatch({
               type: INCREASE_PAGE_NUMBER,
             });
-            console.log("*****Used cached data!!");
+
             return;
           }
 
@@ -96,11 +94,24 @@ const ShowList = () => {
   );
 
   const onViewShowDetails = async ({ id, date }) => {
-    console.log("*****id - date", { id, date });
-    // TODO: check if show has been viewd before
+    // check if show has been viewed before
+    if (getCachedSingleShowsFromLocalStorage()) {
+      const cachedSingleShows = getCachedSingleShowsFromLocalStorage();
+      if (cachedSingleShows[id]) {
+        const show = cachedSingleShows[id];
+        dispatch({
+          type: SET_SELECTED_SHOW_SUCCESS,
+          show,
+        });
+        return;
+      }
+    }
     const res = await fetchShowWithEpisodesById({ id, date });
 
     if (res.status === 200) {
+      // cache show in localStorage
+      const { showDetails } = res.data;
+      saveSingleShowToLocalStorage({ key: showDetails.id, value: res.data });
       dispatch({
         type: SET_SELECTED_SHOW_SUCCESS,
         show: res.data,

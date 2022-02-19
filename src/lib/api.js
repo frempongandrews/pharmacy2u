@@ -7,12 +7,10 @@ export const api = axios.create({
 });
 
 export const fetchShowsByDay = async (day = getTodaysDate()) => {
-  // set day to today
-  console.log("*****Making API call");
   try {
-    //   console.log("******today: ", today);
     // date format: 2022-02-18
     const res = await api.get(`/schedule?country=gb&date=${day}`);
+    console.log("*****Making API call - res ", res);
     return res;
   } catch (err) {
     return err.message;
