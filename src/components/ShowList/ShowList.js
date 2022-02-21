@@ -1,8 +1,8 @@
-import React, { useContext, useEffect, useRef, useCallback } from "react";
-import Overlay from "../components/Overlay";
+import React, { useContext, useRef, useCallback } from "react";
+import Overlay from "../Overlay/Overlay";
 import styled from "styled-components";
-import Show from "./Show";
-import ShowModal from "./ShowModal";
+import Show from "../Show/Show";
+import ShowModal from "../ShowModal/ShowModal";
 import {
   fetchShowWithEpisodesById,
   fetchShowsByDay,
@@ -13,8 +13,8 @@ import {
   getCachedShowsFromLocalStorage,
   saveSingleShowToLocalStorage,
   getCachedSingleShowsFromLocalStorage,
-} from "../lib/api";
-import { ShowsContext } from "../context/ShowsContext";
+} from "../../lib/api";
+import { ShowsContext } from "../../context/ShowsContext";
 import {
   CLOSE_SHOW_MODAL,
   FETCH_SHOWS_ERROR,
@@ -23,7 +23,7 @@ import {
   SET_SELECTED_SHOW_ERROR,
   SET_SELECTED_SHOW_SUCCESS,
   SET_SHOWS,
-} from "../actions/actions";
+} from "../../actions/actions";
 
 const Wrapper = styled.div`
   margin-top: 20px;
@@ -134,7 +134,6 @@ const ShowList = () => {
     return shows.map((dayShows) => {
       for (let date in dayShows) {
         return dayShows[date].map((show, i) => {
-          console.log("******show", show);
           // lastEl reached which we load next day
           if (i === Math.floor((dayShows[date].length - 1) / 2)) {
             return (
